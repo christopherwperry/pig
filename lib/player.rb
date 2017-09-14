@@ -49,4 +49,39 @@ class CautiousPlayer < Player
   end
 end
 
-## TODO add your own Player subclasses here
+
+class NeverHoldPlayer < Player
+  def roll_again?
+    super && @turn_score < 100
+  end
+end
+
+class HalfTimePlayer < Player
+  def start_turn
+    super
+    @total_rolls = 0
+  end
+
+  def record_roll(roll)
+      super
+      @total_rolls += 1
+  end
+
+  def roll_again?
+    !@turn_over && (rand(2) == 0) || (@total_rolls == 0)
+  end
+end
+
+class FiveRollsPlayer < Player
+  def start_turn
+    super
+    @total_rolls = 0
+  end
+  def record_roll(roll)
+    super
+    @total_rolls += 1
+  end
+  def roll_again?
+    super && @rolls < 6
+  end
+end
